@@ -144,9 +144,9 @@ following code will need to be added to your `pallets/template/src/lib.rs` file:
 
 ```rust
 /// Configure the pallet by specifying the parameters and types on which it depends.
-pub trait Trait: frame_system::Trait {
+pub trait Config: frame_system::Config {
     /// Because this pallet emits events, it depends on the runtime's definition of an event.
-    type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
 }
 ```
 
@@ -159,7 +159,7 @@ After we've configured our pallet to emit events, let's go ahead and define whic
 // Event documentation should end with an array that provides descriptive names for parameters.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event! {
-    pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId {
+    pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId {
         /// Event emitted when a proof has been claimed. [who, claim]
         ClaimCreated(AccountId, Vec<u8>),
         /// Event emitted when a claim is revoked by the owner. [who, claim]
@@ -186,14 +186,14 @@ Similarly, errors indicate when a call has failed, and why it has failed.
 ```rust
 // Errors inform users that something went wrong.
 decl_error! {
-	pub enum Error for Module<T: Trait> {
-		/// The proof has already been claimed.
-		ProofAlreadyClaimed,
-		/// The proof does not exist, so it cannot be revoked.
-		NoSuchProof,
-		/// The proof is claimed by another account, so caller can't revoke it.
-		NotProofOwner,
-	}
+    pub enum Error for Module<T: Config> {
+        /// The proof has already been claimed.
+        ProofAlreadyClaimed,
+        /// The proof does not exist, so it cannot be revoked.
+        NoSuchProof,
+        /// The proof is claimed by another account, so caller can't revoke it.
+        NotProofOwner,
+    }
 }
 ```
 
@@ -211,7 +211,7 @@ proof to the owner of that proof and the block number the proof was made.
 // The pallet's runtime storage items.
 // https://substrate.dev/docs/en/knowledgebase/runtime/storage
 decl_storage! {
-    trait Store for Module<T: Trait> as TemplateModule {
+    trait Store for Module<T: Config> as TemplateModule {
         /// The storage item for our proofs.
         /// It maps a proof to the user who made the claim and when they made it.
         Proofs: map hasher(blake2_128_concat) Vec<u8> => (T::AccountId, T::BlockNumber);
@@ -235,7 +235,7 @@ call in this FRAME pallet:
 // These functions materialize as "extrinsics", which are often compared to transactions.
 // Dispatchable functions must be annotated with a weight and must return a DispatchResult.
 decl_module! {
-    pub struct Module<T: Trait> for enum Call where origin: T::Origin {
+    pub struct Module<T: Config> for enum Call where origin: T::Origin {
         // Errors must be initialized if they are used by the pallet.
         type Error = Error<T>;
 
