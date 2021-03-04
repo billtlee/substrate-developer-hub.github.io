@@ -15,7 +15,7 @@ different in terms of the specific configuration settings needed to use it corre
 
 ## Install the Node Template
 
-You should already have version `v3.0.0` of the
+You should already have version `v2.0.1` of the
 [Substrate Node Template](https://github.com/substrate-developer-hub/substrate-node-template)
 compiled on your computer from when you completed the
 [Create Your First Substrate Chain Tutorial](../../tutorials/create-your-first-substrate-chain/).
@@ -23,6 +23,34 @@ If you do not, please complete that tutorial.
 
 > Experienced developers who truly prefer to skip that tutorial, you may install the node template
 > according to the instructions in its readme.
+
+## Compiling Substrate
+
+Once the prerequisites are installed, you can use Git to clone the Substrate Developer Hub Node
+Template, which serves as a good starting point for building on Substrate.
+
+1. Clone the Node Template (version `v2.0.1`).
+
+    ```bash
+    git clone -b v2.0.1 --depth 1 https://github.com/substrate-developer-hub/substrate-node-template
+    ```
+    
+2. Get the v2.0.1 tag and initialize your WebAssembly build environment
+
+    ```bash
+    cd substrate-node-template
+    git checkout tags/v2.0.1
+    make init
+    ```
+
+3. Compile the Node Template
+
+    ```bash
+    cargo build --release
+    ```
+
+The time required for the compilation step depends on the hardware you're using. Don't wait before
+moving on.
 
 ## File Structure
 
